@@ -17,6 +17,9 @@ const categorySchema = new mongoose.Schema({
     },
     enabled: {
         type: Boolean,
+    },
+    id: {
+        type: Number,
     }
 
 })

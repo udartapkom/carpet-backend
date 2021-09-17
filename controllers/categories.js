@@ -1,7 +1,8 @@
 const Category = require('../models/category');
 
 const createCategory = (req, res, next) => {
-    const { title, description, image, enabled } = req.boby;
+   
+    const {title, description, image, enabled } = req.body;
     Category.create({
         title,
         description,
@@ -19,6 +20,18 @@ const createCategory = (req, res, next) => {
     })
 }
 
+const getCategories = (req, res, next) => {
+  
+    Category.find()
+    .then((categories) => {
+            res.send(categories);
+        })
+    .catch((error) => {
+        res.send('Ошибка получения списка категорий ' + error)
+    })
+}
+
 module.exports = {
     createCategory,
+    getCategories,
 } 

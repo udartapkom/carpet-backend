@@ -14,8 +14,9 @@ const ProductSchema = new mongoose.Schema({
         default: 'Без описания',
     },
     categories: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'categories',
+       // type: Number,
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'categories',
     },
     width: { // ширина
         type: Number,

@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/admins');
+const { ConflictErr } = require('../errors/index');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -22,8 +23,12 @@ const createAdmin = (req, res, next) => {
         })
     })
     .catch((error) => {
-        res.send('Ошибка создания администратора ' + error)
+        if (error.name === 'MongoError' && error.code === 11000) {
+            throw new ConflictErr('Ошибка создания администратора ');
+        }
+       // res.send(ConflictErr('Ошибка создания администратора') + error)
     })
+    .catch(next);
 }
 
 const loginAdmin = (req, res, next) => {

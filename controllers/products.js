@@ -1,13 +1,15 @@
 const Product = require('../models/product');
 
 const createProduct = (req, res, next) => {
-    const { title, subtitle, width, height, price, quantity } = req.body;
+    
+    const { title, subtitle, categories, width, height, prise, quantity } = req.body;
     Product.create({
         title, 
-        subtitle, 
+        subtitle,
+        categories,
         width, 
         height, 
-        price, 
+        prise, 
         quantity
     })
     .then((product) => {
