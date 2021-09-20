@@ -4,7 +4,7 @@ const { createAdmin, loginAdmin } = require('../controllers/admins');
 const { auth } = require('../middleware/auth');
 
 //Роуты создания и пр. для админа
-router.post('/', createAdmin);
+router.post('/', auth, createAdmin);
 router.get('/me', auth, loginAdmin);
 
 //роуты категорий

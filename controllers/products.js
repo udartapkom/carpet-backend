@@ -1,4 +1,10 @@
 const Product = require('../models/product');
+const { ERR_MSG } = require('../utils/constants');
+const {
+    BadRequestErr,
+    ForbiddenErr,
+    NotFoundErr,
+  } = require('../errors/index');
 
 const createProduct = (req, res, next) => {
     
@@ -21,6 +27,18 @@ const createProduct = (req, res, next) => {
     .catch((error) => {
         res.send('Ошибка создания товара ' + error)
     })
-
 }
-module.exports = {createProduct};
+const getAllProducts = (req, res, next) => {
+    //const owner = req.user._id;
+    Product.find()
+      .orFail(() => {
+        throw new NotFoundErr(ERR_MSG.NOT_FOUND);
+      })
+      .then((data) => res.send(data))
+      .catch(next);
+  };
+
+module.exports = {
+    createProduct,
+    getAllProducts,
+};
