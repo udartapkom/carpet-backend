@@ -8,13 +8,14 @@ const {
 
 const createProduct = (req, res, next) => {
     
-    const { title, subtitle, categories, width, height, prise, quantity } = req.body;
+    const { title, subtitle, categories, width, height, image, prise, quantity } = req.body;
     Product.create({
         title, 
         subtitle,
         categories,
         width, 
-        height, 
+        height,
+        image, 
         prise, 
         quantity
     })
@@ -37,8 +38,22 @@ const getAllProducts = (req, res, next) => {
       .then((data) => res.send(data))
       .catch(next);
   };
+  const delProductById = (req, res, next) => {
+      const {productID} = req.params;
+        Product.findById(productID)
+        .then((product) => {
+            product.remove()
+            .then(() => res.send(product))
+            .catch(next);
+        })
+        .catch(() => {
+            throw new NotFoundErr(ERR_MSG.NOT_FOUND);
+        })
+        .catch(next);
+  }
 
 module.exports = {
     createProduct,
     getAllProducts,
+    delProductById,
 };
