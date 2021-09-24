@@ -33,5 +33,25 @@ const ProductSchema = new mongoose.Schema({
     quantity: { // количество на складе
         type: Number,
     },
+    quality: { // Качество
+        type: String,
+        minlength: 2,
+        maxlength: 70,
+    },
+    design: { // Дизайн
+        type: String,
+        minlength: 2,
+        maxlength: 70,
+    },
+    country: { // Страна
+        type: String,
+        minlength: 2,
+        maxlength: 70,
+    },
+    form: { // форма
+        type: String,
+        minlength: 2,
+        maxlength: 70,
+    },
 })
 module.exports = mongoose.model('product', ProductSchema);

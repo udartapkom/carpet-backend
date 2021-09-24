@@ -8,7 +8,7 @@ const {
 
 const createProduct = (req, res, next) => {
     
-    const { title, subtitle, categories, width, height, image, prise, quantity } = req.body;
+    const { title, subtitle, categories, width, height, image, prise, quantity, quality, design, country, form } = req.body;
     Product.create({
         title, 
         subtitle,
@@ -17,7 +17,11 @@ const createProduct = (req, res, next) => {
         height,
         image, 
         prise, 
-        quantity
+        quantity,
+        quality,
+        design,
+        country,
+        form
     })
     .then((product) => {
         Product.findById(product._id)
@@ -29,6 +33,7 @@ const createProduct = (req, res, next) => {
         res.send('Ошибка создания товара ' + error)
     })
 }
+
 const getAllProducts = (req, res, next) => {
     //const owner = req.user._id;
     Product.find()
@@ -38,6 +43,7 @@ const getAllProducts = (req, res, next) => {
       .then((data) => res.send(data))
       .catch(next);
   };
+  
   const delProductById = (req, res, next) => {
       const {productID} = req.params;
         Product.findById(productID)
