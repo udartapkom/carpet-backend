@@ -10,7 +10,7 @@ const { ConflictErr, BadRequestErr } = require('../errors/index');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const createAdmin = (req, res, next) => {
-    const { name, email, password } = req.body;
+    const { name, email, role, password } = req.body;
     if(!name || !email || !password){
         throw new BadRequestErr(ERR_MSG.BAD_REQUEST);
     }
@@ -18,6 +18,7 @@ const createAdmin = (req, res, next) => {
     .then((hash) => Admin.create({
         name,
         email,
+        role,
         password: hash,
     }))
     .then((admin) => {
@@ -39,8 +40,9 @@ const createAdmin = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
+  console.log(req.user);
     const userId = req.user._id;
-    User.findById(userId)
+    Admin.findById(userId)
       .then((data) => {
         if (!data) {
           throw new NotFoundErr(ERR_MSG.NOT_FOUND);

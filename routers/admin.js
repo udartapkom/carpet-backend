@@ -5,8 +5,8 @@ const { auth } = require('../middleware/auth');
 
 //Роуты создания и пр. для админа
 router.post('/', createAdmin);
-router.get('/signin', loginAdmin);
-router.get('/me', getCurrentUser);
+router.post('/signin', loginAdmin);
+router.get('/me', auth, getCurrentUser); 
 
 //роуты категорий
 //router.post('/category', createCategory);
