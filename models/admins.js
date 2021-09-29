@@ -19,6 +19,12 @@ const AdminSchema = new mongoose.Schema({
             message: 'Некоррекртный Email',
         },
     },
+    role: {
+      type: String,
+      required: true,
+      default: 'customer',
+    },
+    
     password: {
         type: String,
         required: true,

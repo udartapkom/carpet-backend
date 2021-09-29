@@ -1,14 +1,18 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/admins');
-const { ConflictErr } = require('../errors/index');
+
+const { ERR_MSG } = require('../utils/constants');
+const { ConflictErr, BadRequestErr } = require('../errors/index');
+
+
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const createAdmin = (req, res, next) => {
     const { name, email, password } = req.body;
     if(!name || !email || !password){
-        res.send("Невозможно создать администратора");
+        throw new BadRequestErr(ERR_MSG.BAD_REQUEST);
     }
     bcrypt.hash(password, 10)
     .then((hash) => Admin.create({
@@ -22,14 +26,38 @@ const createAdmin = (req, res, next) => {
             res.send(data);
         })
     })
-    .catch((error) => {
-        if (error.name === 'MongoError' && error.code === 11000) {
-            throw new ConflictErr('Ошибка создания администратора ');
+    .catch((err) => {
+        if (err.name === 'MongoError' && err.code === 11000) {
+          throw new ConflictErr(ERR_MSG.CONFLICT);
+        } else if (err.name === 'ValidationError') {
+          throw new BadRequestErr(ERR_MSG.BAD_REQUEST);
+        } else {
+          throw new Error(ERR_MSG.SERVER_ERROR);
         }
-       // res.send(ConflictErr('Ошибка создания администратора') + error)
     })
     .catch(next);
-}
+};
+
+const getCurrentUser = (req, res, next) => {
+    const userId = req.user._id;
+    User.findById(userId)
+      .then((data) => {
+        if (!data) {
+          throw new NotFoundErr(ERR_MSG.NOT_FOUND);
+        }
+        res.send(data);
+      })
+      .catch((err) => {
+        if (err.kind === 'ObjectId' || err.kind === 'CastError') {
+          throw new BadRequestErr(ERR_MSG.BAD_REQUEST);
+        } else if (err.statusCode === 404) {
+          next(err);
+        } else {
+          throw new Error(ERR_MSG.SERVER_ERROR);
+        }
+      })
+      .catch(next);
+  };
 
 const loginAdmin = (req, res, next) => {
     const { email, password} = req.body;
@@ -51,4 +79,5 @@ const loginAdmin = (req, res, next) => {
 module.exports = {
     createAdmin,
     loginAdmin,
+    getCurrentUser,
 };
