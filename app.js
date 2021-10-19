@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routers = require('./routers/index');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const CFG = require('./utils/config'); //конфиг
 const { PORT = CFG.PORT, MONGO_URL = CFG.MONGO_URL } = process.env; //получаем константы для подключения mongoDB
@@ -25,6 +26,7 @@ mongoose.connect(MONGO_URL,  //коннектимся к БД
     });
   
   mongoose.connection.on('open', () => console.log('connected to mongoDB')); //выводим в консоль сообщение, если коннект успешен 
+  
   app.use((req, res, next) => {
     const { origin } = req.headers;
     if (allowedCors.includes(origin)) {
@@ -32,7 +34,8 @@ mongoose.connect(MONGO_URL,  //коннектимся к БД
     }
     next();
   });
-  app.use(cors());
+  app.use(fileUpload({}))
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use('/', routers);

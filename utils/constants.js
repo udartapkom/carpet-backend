@@ -6,6 +6,7 @@ const ERR_MSG = {
   UNAUTORIZED: 'Необходима авторизация',
   SERVER_ERROR: 'На сервере произошла ошибка',
   VALIDATION_ERR: 'Ошибка валидации, проверьте данные',
+  FILE_CONFLICT: 'Один или несколько загружаемых файлов уже существуют ',
 };
 
 module.exports = { ERR_MSG };

@@ -24,9 +24,11 @@ const ProductSchema = new mongoose.Schema({
     height: { // высота
         type: Number,
     },
-    image: {
+    image: [{
         type: String,
-    },
+        minlength: 2,
+        maxlength: 70,
+    }],
     prise: { // цена
         type: Number,
     },

@@ -69,7 +69,7 @@ const loginAdmin = (req, res, next) => {
         const adminToken = jwt.sign(
             { _id: admin._id },
             NODE_ENV === 'production' ? JWT_SECRET : 'very-secret',
-            { expiresIn: '3h'},
+            { expiresIn: '9h'},
         );
         res.send({ adminToken });
     })
