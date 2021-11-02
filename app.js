@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const routers = require('./routers/index');
 const cors = require('cors');
+const serveStatic = require('serve-static')
 const fileUpload = require('express-fileupload');
 
 const CFG = require('./utils/config'); //конфиг
@@ -38,6 +39,7 @@ mongoose.connect(MONGO_URL,  //коннектимся к БД
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(serveStatic('uploads/images'))
 app.use('/', routers);
 
 app.listen(PORT, () => {

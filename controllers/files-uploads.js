@@ -51,6 +51,7 @@ const uploadFiles = (req, res, next) => {
   }
 
   if (!Array.isArray(req.files.productPhoto)) {
+ 
     // Загружаем если файл один
     uploadPath = path.join(__dirname, "../uploads/images/" + req.files.productPhoto.name);
     let data = [];
